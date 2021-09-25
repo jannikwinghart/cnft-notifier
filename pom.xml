@@ -2,22 +2,43 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
+
+	<!--parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.5</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>com.cnft</groupId>
-	<artifactId>notifier</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>notifier</name>
-	<description>Notifier for cnft offers</description>
+		<relativePath/>
+	</parent-->
+
+	<groupId>com.cnft.notifier</groupId>
+	<artifactId>parent</artifactId>
+	<packaging>pom</packaging>
+	<version>${revision}</version>
+
+	<name>cnft-notifier-parent</name>
+	<description>Notifier for cnft offers parent</description>
+
+	<modules>
+		<module>cnft-notifier-lib</module>
+		<module>cnft-notifier-api</module>
+		<!--module>cnft-notifier-app</module-->
+	</modules>
+
 	<properties>
+		<revision>0.0.1-SNAPSHOT</revision>
 		<java.version>11</java.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
 	</properties>
+
 	<dependencies>
 		<dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+		<!--dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
@@ -65,7 +86,7 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
-		</dependency>
+		</dependency-->
 	</dependencies>
 
 	<build>
@@ -73,6 +94,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.5.5</version>
 				<configuration>
 					<excludes>
 						<exclude>

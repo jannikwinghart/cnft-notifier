@@ -1,4 +1,4 @@
-HELP.md
+cnft-notifier-api/HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
