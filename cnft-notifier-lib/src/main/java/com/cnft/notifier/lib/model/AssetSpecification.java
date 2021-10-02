@@ -20,8 +20,10 @@ public class AssetSpecification {
 
     public boolean isMatchingAsset(Asset asset){
         for(String tagName: tagSpecification.keySet()){
-            if(!tagSpecification.get(tagName).equalsIgnoreCase(asset.getTagSpecification().get(tagName))){
-                return false;
+            for(String tagValue: tagSpecification.get(tagName)){
+                if(!asset.getTagSpecification().containsKey(tagName) || !asset.getTagSpecification().get(tagName).contains(tagValue)){
+                    return false;
+                }
             }
         }
 

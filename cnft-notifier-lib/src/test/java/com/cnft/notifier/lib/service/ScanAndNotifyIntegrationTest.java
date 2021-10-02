@@ -6,7 +6,9 @@ import com.cnft.notifier.lib.model.TagSpecification;
 import com.cnft.notifier.lib.model.Watchlist;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +23,7 @@ public class ScanAndNotifyIntegrationTest {
 
         // generate Watchlist
         TagSpecification tagSpecificationCryptoDino = new TagSpecification();
-        tagSpecificationCryptoDino.put("Species", "Triceratops");
+        tagSpecificationCryptoDino.put("Species", new ArrayList<String>(Collections.singletonList("Triceratops")));
         AssetSpecification assetSpecificationCryptoDino = new AssetSpecification("CryptoDino", tagSpecificationCryptoDino);
         List<AssetSpecification> assetSpecificationsWatchlist = new ArrayList<AssetSpecification>();
         assetSpecificationsWatchlist.add(assetSpecificationCryptoDino);
@@ -34,11 +36,18 @@ public class ScanAndNotifyIntegrationTest {
         List<Asset> newAssets = marketplaceScannerCnftioService.scanNewAssets();
 
         TagSpecification dummyAssetTagSpecification = new TagSpecification();
-        dummyAssetTagSpecification.put("Mint", "9432");
-        dummyAssetTagSpecification.put("Species", "Triceratops");
-        dummyAssetTagSpecification.put("Teeth", "Hippo");
-        Asset dummyAsset = new Asset("CryptoDino", "CryptoDino09432", dummyAssetTagSpecification, 45);
-        // todo: mock scanner and remove manual add of asset
+        dummyAssetTagSpecification.put("Mint", new ArrayList<String>(Collections.singletonList("9432")));
+        dummyAssetTagSpecification.put("Species", new ArrayList<String>(Collections.singletonList("Triceratops")));
+        dummyAssetTagSpecification.put("Teeth", new ArrayList<String>(Collections.singletonList("Hippo")));
+        Asset dummyAsset = new Asset(
+                "CryptoDino",
+                "CryptoDino09432",
+                "123456789",
+                dummyAssetTagSpecification,
+                45,
+                Instant.now(),
+                "http://www.google.com"
+        );
         newAssets.add(dummyAsset);
 
         System.out.println(newAssets);
@@ -51,8 +60,12 @@ public class ScanAndNotifyIntegrationTest {
 
         System.out.println(triggeredWatchlists);
 
-        assertEquals(triggeredWatchlists.get(0), watchlist);
-        assertEquals(triggeredWatchlists.get(0).getMatchedAssets().get(0), dummyAsset);
+        if(triggeredWatchlists.size() == 0) {
+            fail("No Watchlists triggered");
+        }else{
+            assertEquals(triggeredWatchlists.get(0), watchlist);
+            assertEquals(triggeredWatchlists.get(0).getMatchedAssets().get(0), dummyAsset);
+        }
 
         // notify users
         for (Watchlist triggeredWatchlist: triggeredWatchlists) {
